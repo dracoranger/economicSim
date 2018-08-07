@@ -22,6 +22,7 @@ $RECYCLE.BIN/
 
 \project\*
 \target\*
+\City\*
 
 # =========================
 # Operating System Files

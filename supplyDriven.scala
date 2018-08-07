@@ -1,5 +1,3 @@
-package City
-
 import scala.math
 import java.io._
 
@@ -7,20 +5,16 @@ object main{
   def main(){
     val test = new City(1)
     val writer = new PrintWriter(new File("test1.csv" ))
-    //Resource(nam: String, desire: Double, supplier: Double, averag: Double, unit_pric: Double, curv: Double)
-    val resources_array = Array(//new Resource("food",1,10,10000,100,.5,0),
-                          //new Resource("housing",1,10,10000,100,.25,0),
-                          new Resource("lux",900,10,100,10,.5))
+    //class Industry(nam: String, input: Double, output: Double, worker: Int, in_storage: Double, price: Double){
+    val resources_array = Array(new Industry("food",1,10,10000,100,.5,0),
+                          new Industry("wood",1,10,10000,100,.25,0),
+                          new Industry("stone",900,10,100,10,.5))
     for(i <- 0 to 10){
       test.next_fiscal_quarter(resources_array)
       display.display_data(test, i, writer)
     }
     writer.close()
   }
-
-}
-
-object display{
   def display_data(city: City, count: Int, writer: PrintWriter){
     count.toString()
     val data = count.toString()+",\t"+city.population.toString()+",\t"+city.gdp.toString()+",\t"+city.savings_total.toString()+"\n"
@@ -28,10 +22,9 @@ object display{
     print(data + "\n")
     writer.write(data)
   }
-}
 
 class City(var locl:Int){
-  var population:Double = 1000
+  var population:Double = 2000
   var fertility_rate = .15
   var death_rate = .10
   var location = locl
@@ -63,16 +56,33 @@ class City(var locl:Int){
   }
 
 }
-class Resource(nam: String, desire: Double, supplier: Double, averag: Double, unit_pric: Double, curv: Double){
+class Industry(nam: String, input: Double, output: Double, worker: Int, in_storage: Double, price: Double){
   val name = nam
-  var desired:Double = desire
-  var suppliers:Double = supplier
-  var average_supplied:Double = averag
-  var unit_price:Double = unit_pric
-  var curve:Double = curv
+  val inputs = input
+  val outputs = output
+  var productivity_growth = 0
+  var resource_efficency_growth = 0
+  var workers = worker
+  var in_storage = stored
+  var last_produced = 500
+  var last_used = 500
+  var price = pric
+  var produced = 0
+
+  def tickFinish(){
+
+
+  }
+  def tickStart(){
+
+
+  }
+  def findBottleneck(){
+
+  }
 
   override def toString():String={
-    return(nam+" \nDesired Amount "+desired.toString()+" \nSupplier Number "+suppliers.toString()+" \nAverage Supplied "+average_supplied.toString()+" \nUnit price "+unit_price.toString()+" \ncurve "+curve.toString()+"\n")
+    return(name+" \nWorkers "+workers.toString()+" \nStored "+in_storage.toString()+" \nProduced "+produced.toString()+" \nPrice "+price.toString()+" \n")
 
   }
 }
