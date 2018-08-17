@@ -6,68 +6,47 @@ object main{
     val test = new City(1)
     val writer = new PrintWriter(new File("test1.csv" ))
     //class Industry(nam: String, input: Double, output: Double, worker: Int, in_storage: Double, price: Double){
-    val resources_array = Array(new Industry("food",1,10,10000,100,.5,0),
-                          new Industry("wood",1,10,10000,100,.25,0),
-                          new Industry("stone",900,10,100,10,.5))
     for(i <- 0 to 10){
-      test.next_fiscal_quarter(resources_array)
-      display.display_data(test, i, writer)
+      test.next_fiscal_quarter()
+      display_data(test, i, writer)
     }
     writer.close()
   }
   def display_data(city: City, count: Int, writer: PrintWriter){
     count.toString()
-    val data = count.toString()+",\t"+city.population.toString()+",\t"+city.gdp.toString()+",\t"+city.savings_total.toString()+"\n"
+    val data = count.toString()+",\t"+city.population.toString()+"\n"
     print("Count\tPopulation\t\tGDP\t\tsavings\n")
     print(data + "\n")
     writer.write(data)
   }
-
+}
 class City(var locl:Int){
   var population:Double = 2000
   var fertility_rate = .15
   var death_rate = .10
   var location = locl
-  var gdp:Double = 100
-  var optimism = .5 //split up optimism and pessimism?
-
-  var savings_total:Double = 200
-  var savings_rate = .5
-
-  def next_fiscal_quarter(resources: Array[Resource]){
-    val resource_num = resources.length
-    nextUnit(resources, gdp, resource_num)
-  }
-
-  def nextUnit(resources: Array[Resource], lastGDP: Double, resource_num:Int): Int={
-    population = population * (1+fertility_rate-death_rate)
-    for(i <- resources){
-      var amount = i.desired
-      val ready= i.suppliers * i.average_supplied
-      val diff = amount/ready
-      val price = scala.math.pow(i.unit_price,scala.math.pow(diff,i.curve))
-
-      i.desired = (amount / diff) / price/i.unit_price
-      i.average_supplied = (i.average_supplied * diff) * price/i.unit_price
-      //i.suppliers = (i.suppliers * diff) * price/i.unit_price
+                      //nam: String, input: Array[Double], output: Array[Double], worker: Int, in_storage: Double, pric: Double)
+  val resources_array = Array(new Industry("food", Array(1.0,1.0,0.0), Array(3.0,0.0,0.0), 700, 600.0, 1.0),
+                              new Industry("wood", Array(1.0,0.0,1.0), Array(0.0,3.0,0.0), 700, 600.0, 1.0),
+                              new Industry("stone" Array(1.0,1.0,0.0), Array(0.0,0.0,3.0), 600, 600.0, 1.0))
+  def next_fiscal_quarter():Int={
+    val storage = Array(resources_array(0).stored,resources_array(1).stored,resources_array(2).stored)
+    val demand = Array.fill(3,0)
+    var excess_demand = False
+    for (i <- resources_array){
+      demand(0) = demand(0) + i.inputs(0)*i.workers
+      demand(1) = demand(1) + i.inputs(1)*i.workers
+      demand(2) = demand(2) + i.inputs(2)*i.workers
     }
-    print(resources(0).toString())
-    return 1
-  }
+    for(var i <- 0 until 3){
+      if(demand(i)>storage(i)){
+        excess_demand = True
+      }
+    }
+    if(excess_demand){
 
-}
-class Industry(nam: String, input: Double, output: Double, worker: Int, in_storage: Double, price: Double){
-  val name = nam
-  val inputs = input
-  val outputs = output
-  var productivity_growth = 0
-  var resource_efficency_growth = 0
-  var workers = worker
-  var in_storage = stored
-  var last_produced = 500
-  var last_used = 500
-  var price = pric
-  var produced = 0
+    }
+  }
 
   def tickFinish(){
 
@@ -80,6 +59,22 @@ class Industry(nam: String, input: Double, output: Double, worker: Int, in_stora
   def findBottleneck(){
 
   }
+
+
+}
+class Industry(nam: String, input: Array[Double], output: Array[Double], worker: Int, in_storage: Double, pric: Double){
+  val name = nam
+  val inputs = input
+  val outputs = output
+  var productivity_growth = 0
+  var resource_efficency_growth = 0
+  var workers = worker
+  var stored = in_storage
+  var last_produced = 500
+  var last_used = 500
+  var price = pric
+  var produced = 0
+
 
   override def toString():String={
     return(name+" \nWorkers "+workers.toString()+" \nStored "+in_storage.toString()+" \nProduced "+produced.toString()+" \nPrice "+price.toString()+" \n")
