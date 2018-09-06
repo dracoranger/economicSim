@@ -14,10 +14,9 @@ object main{
     writer.close()
   }
   def display_data(city: City, count: Int, writer: PrintWriter){
-    count.toString()
     val data = count.toString()+",\t"+city.population.toString()+"\n"+city.toString()
     print(data)
-    print(city.toString())
+    //print(city.toString())
     writer.write(data)
   }
 }
@@ -56,12 +55,11 @@ class City(var locl:Int){
     while(excess_demand){
       for(i<-resources_array){
           if(i.inputs(excess_resourc)>0){
-            print(i.toString())
             //How much it needs to be decreased by (so the excess over the total),
             val diff = i.workers
-            i.workers = excess_resourc_amnt/i.stored * i.workers
+            i.workers = (1 - excess_resourc_amnt/i.stored) * i.workers
+            //print("Excess "+excess_resourc_amnt.toString() + " " + i.stored.toString()+ " " + (excess_resourc_amnt/i.stored).toString()+"\n")
             unemployed = unemployed + diff - i.workers
-            print(i.toString()+"\n")
           }
 
        }
@@ -90,15 +88,19 @@ class City(var locl:Int){
     unemployed = 0
 
     for (i <- 0 to 2){
+      //print(resources_array(i).stored.toString() + " Stored  Output " + output(i).toString()+"\n")
       resources_array(i).stored = resources_array(i).stored + output(i)
       resources_array(i).produced = output(i)
+      if(resources_array(i).stored < 0){
+        resources_array(i).stored = 1
+      }
     }
 
     return 1
   }
 
   def findExcess(){
-    val storage = Array(resources_array(0).stored,resources_array(1).stored,resources_array(2).stored)
+    val storage = Array(resources_array(0).stored, resources_array(1).stored, resources_array(2).stored)
     val workers = Array.fill[Double](3)(0)
     val demand = Array.fill[Double](3)(0)
     var excess = false
@@ -116,7 +118,7 @@ class City(var locl:Int){
     }
 
     for(i <- 0 to 2){
-      if(demand(i) > storage(i)){
+      if(demand(i) - storage(i) > .5){
         excess = true
         if((demand(i) - storage(i))/storage(i) > amnt){
           ret = i
@@ -146,7 +148,7 @@ class Industry(nam: String, input: Array[Double], output: Array[Double], worker:
 
 
   override def toString():String={
-    return(name+" \nWorkers "+workers.toString()+" \nStored "+in_storage.toString()+" \nProduced "+produced.toString()+" \nPrice "+price.toString()+" \n")
+    return(name+" \nWorkers "+workers.toString()+" \nStored "+stored.toString()+" \nProduced "+produced.toString()+" \nPrice "+price.toString()+" \n")
 
   }
 }
