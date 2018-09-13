@@ -91,9 +91,6 @@ class City(var locl:Int){
       //print(resources_array(i).stored.toString() + " Stored  Output " + output(i).toString()+"\n")
       resources_array(i).stored = resources_array(i).stored + output(i)
       resources_array(i).produced = output(i)
-      if(resources_array(i).stored < 0){
-        resources_array(i).stored = 1
-      }
     }
 
     return 1
@@ -118,7 +115,7 @@ class City(var locl:Int){
     }
 
     for(i <- 0 to 2){
-      if(demand(i) - storage(i) > .5){
+      if(demand(i) - storage(i) > 1){
         excess = true
         if((demand(i) - storage(i))/storage(i) > amnt){
           ret = i
