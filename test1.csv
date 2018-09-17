@@ -14,6 +14,8 @@ Workers 513.4111014868234
 Stored 930.5499319425173 
 Produced 540.89988863321 
 Price 1.0 
+
+************
 1,	2205.0
 food 
 Workers 1124.2089297923233 
@@ -30,6 +32,8 @@ Workers 544.8711587890268
 Stored 1329.7100545783787 
 Produced 585.3133128982269 
 Price 1.0 
+
+************
 2,	2315.25
 food 
 Workers 1169.9992590523889 
@@ -46,6 +50,8 @@ Workers 607.1067022334182
 Stored 1916.942354771067 
 Produced 777.4044550101853 
 Price 1.0 
+
+************
 3,	2431.0125
 food 
 Workers 1216.3990634981592 
@@ -62,6 +68,8 @@ Workers 692.1725610887632
 Stored 2790.661761853007 
 Produced 1055.9815821093916 
 Price 1.0 
+
+************
 4,	2552.5631249999997
 food 
 Workers 1010.5876578125759 
@@ -78,6 +86,8 @@ Workers 592.4838738955228
 Stored 3780.255769588929 
 Produced 1292.5496836627854 
 Price 1.0 
+
+************
 5,	2680.1912812499995
 food 
 Workers 1250.0118645801908 
@@ -94,6 +104,8 @@ Workers 795.46957264848
 Stored 4826.160627147198 
 Produced 1327.7176933966584 
 Price 1.0 
+
+************
 6,	2814.2008453124995
 food 
 Workers 1109.8542711868574 
@@ -110,6 +122,8 @@ Workers 784.6969470512697
 Stored 6450.700993387334 
 Produced 1783.7933846717428 
 Price 1.0 
+
+************
 7,	2954.9108875781244
 food 
 Workers 880.7549650099693 
@@ -126,10 +140,12 @@ Workers 656.2210558613581
 Stored 7213.266891034168 
 Produced 1333.1503772755525 
 Price 1.0 
+
+************
 8,	3102.6564319570307
 food 
 Workers 1668.0234959765144 
-Stored 1.0 
+Stored -0.999877408437726 
 Produced 5.100175033838282E-58 
 Price 1.0 
 wood 
@@ -142,35 +158,41 @@ Workers 766.9239530244421
 Stored 7511.910970370259 
 Produced 299.14366390150894 
 Price 1.0 
+
+************
 9,	3257.789253554882
 food 
-Workers -3446837.168469092 
-Stored 1.0 
-Produced -1.5515903344364846E7 
+Workers NaN 
+Stored NaN 
+Produced NaN 
 Price 1.0 
 wood 
-Workers 1724514.082498887 
-Stored 5171280.558352034 
-Produced -1849.5914609093168 
+Workers NaN 
+Stored NaN 
+Produced NaN 
 Price 1.0 
 stone 
-Workers 1725580.8752237593 
-Stored 9479.228171047787 
-Produced 1350.7867137077571 
+Workers NaN 
+Stored NaN 
+Produced NaN 
 Price 1.0 
+
+************
 10,	3420.6787162326264
 food 
-Workers -8.397951499038029E19 
-Stored 1.0 
-Produced -3.779078194743224E20 
+Workers NaN 
+Stored NaN 
+Produced NaN 
 Price 1.0 
 wood 
-Workers 4.1989758163987956E19 
-Stored 1.259692744882298E20 
-Produced -1.1217698171695984E10 
+Workers NaN 
+Stored NaN 
+Produced NaN 
 Price 1.0 
 stone 
-Workers 4.198975682639233E19 
-Stored 1.0 
-Produced -4.024004569995807E12 
+Workers NaN 
+Stored NaN 
+Produced NaN 
 Price 1.0 
+
+************

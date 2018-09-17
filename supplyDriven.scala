@@ -14,7 +14,7 @@ object main{
     writer.close()
   }
   def display_data(city: City, count: Int, writer: PrintWriter){
-    val data = count.toString()+",\t"+city.population.toString()+"\n"+city.toString()
+    val data = count.toString()+",\t"+city.population.toString()+"\n"+city.toString()+"\n************\n"
     print(data)
     //print(city.toString())
     writer.write(data)
@@ -68,6 +68,7 @@ class City(var locl:Int){
 
     for (i <- resources_array){
       for( j <- 0 to 2){
+        print(i.name+" "+i.workers+"\n")
         resources_array(j).stored = resources_array(j).stored - i.inputs(j) * i.workers
         output(j) = output(j) + i.outputs(j) * i.workers
       }
@@ -76,7 +77,9 @@ class City(var locl:Int){
     //Allocation of new workers
     val unemploy = unemployed
     for (i <- resources_array){
-      if(math.abs(i.stored)<5){
+      print(i.name+" "+i.stored+"\n")
+      print("unemployment =" + unemployed + "\n")
+      if(i.stored<5){
         i.workers = i.workers + unemploy/resources_array.length
         unemployed = unemployed - unemploy/resources_array.length
       }
@@ -115,7 +118,7 @@ class City(var locl:Int){
     }
 
     for(i <- 0 to 2){
-      if(demand(i) - storage(i) > 1){
+      if(demand(i) - storage(i) >= 1){
         excess = true
         if((demand(i) - storage(i))/storage(i) > amnt){
           ret = i
