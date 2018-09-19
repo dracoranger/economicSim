@@ -1,9 +1,10 @@
 import java.io._
 
+val RESOURCE_NUM = 3
 
 object main{
   def main(){
-    val test = new City(1)
+    val test = new City(2000,.15,.10)
     val writer = new PrintWriter(new File("test1.csv" ))
     //class Industry(nam: String, input: Double, output: Double, worker: Int, in_storage: Double, price: Double){
     for(i <- 0 to 100){
@@ -20,11 +21,39 @@ object main{
     writer.write(data)
   }
 }
-class City(var locl:Int){
-  var population:Double = 2000.0
-  var fertility_rate = .15
-  var death_rate = .10
-  var location = locl
+
+class World(var sqVol: Int){
+  val grid = Array[Square][Square](sqVol)(sqVol)
+
+}
+
+class Nation(){
+  val national_stores = Array.fill[Double](RESOURCE_NUM)(0)
+
+
+}
+
+class Square(var trav: Double, var type, var cit: City){
+  var trade = Array.fill[Double](RESOURCE_NUM)(1000)
+  var traversal_cost = trav
+  var city = cit
+  var owner = 0
+
+  def get_trade(){
+
+  }
+
+  def give_trade(){
+
+  }
+
+
+}
+
+class City(var pop:Double, var fert:Double, var dea:Double){
+  var population:Double = pop
+  var fertility_rate = fert
+  var death_rate = dea
   var unemployed = 0.0
                       //class Industry(nam: String, input: Array[Double], output: Array[Double], worker: Double, in_storage: Double, pric: Double){
   val resources_array = Array(new Industry("food", Array(0.0,1.0,0.0), Array(2.0,0.0,0.0), 1000.0, 600.0, 1.0),//Bug if good needs itself for production
@@ -51,7 +80,7 @@ class City(var locl:Int){
     unemployed = unemployed + population * (fertility_rate - death_rate)
     population = population + population * (fertility_rate - death_rate)
     findExcess()
-    val output = Array.fill[Double](3)(0)
+    val output = Array.fill[Double](RESOURCE_NUM)(0)
     while(excess_demand){
       for(i<-resources_array){
           if(i.inputs(excess_resourc)>0){
@@ -68,7 +97,6 @@ class City(var locl:Int){
 
     for (i <- resources_array){
       for( j <- 0 to 2){
-        print(i.name+" "+i.workers+"\n")
         resources_array(j).stored = resources_array(j).stored - i.inputs(j) * i.workers
         output(j) = output(j) + i.outputs(j) * i.workers
       }
@@ -77,8 +105,6 @@ class City(var locl:Int){
     //Allocation of new workers
     val unemploy = unemployed
     for (i <- resources_array){
-      print(i.name+" "+i.stored+"\n")
-      print("unemployment =" + unemployed + "\n")
       if(i.stored<5){
         i.workers = i.workers + unemploy/resources_array.length
         unemployed = unemployed - unemploy/resources_array.length
@@ -101,8 +127,8 @@ class City(var locl:Int){
 
   def findExcess(){
     val storage = Array(resources_array(0).stored, resources_array(1).stored, resources_array(2).stored)
-    val workers = Array.fill[Double](3)(0)
-    val demand = Array.fill[Double](3)(0)
+    val workers = Array.fill[Double](RESOURCE_NUM)(0)
+    val demand = Array.fill[Double](RESOURCE_NUM)(0)
     var excess = false
     var ret = 0
     var amnt = 0.0
