@@ -1,4 +1,3 @@
-import scala.math
 import java.io._
 
 
@@ -7,15 +6,16 @@ object main{
     val test = new City(1)
     val writer = new PrintWriter(new File("test1.csv" ))
     //class Industry(nam: String, input: Double, output: Double, worker: Int, in_storage: Double, price: Double){
-    for(i <- 0 to 10){
+    for(i <- 0 to 100){
       test.next_fiscal_quarter()
       display_data(test, i, writer)
     }
     writer.close()
   }
   def display_data(city: City, count: Int, writer: PrintWriter){
-    val data = count.toString()+",\t"+city.population.toString()+"\n"+city.toString()+"\n************\n"
+    val data = count.toString()+",\t"+city.population.toString()+"\n"+"name\t workers\t      stored\t\t produced\t price\n"+city.toString()
     print(data)
+    print("\n************\n")
     //print(city.toString())
     writer.write(data)
   }
@@ -27,9 +27,9 @@ class City(var locl:Int){
   var location = locl
   var unemployed = 0.0
                       //class Industry(nam: String, input: Array[Double], output: Array[Double], worker: Double, in_storage: Double, pric: Double){
-  val resources_array = Array(new Industry("food", Array(1.0,1.0,0.0), Array(3.0,0.0,0.0), 700.0, 600.0, 1.0),
-                              new Industry("wood", Array(1.0,0.0,1.0), Array(0.0,3.0,0.0), 700.0, 600.0, 1.0),
-                              new Industry("stone", Array(1.0,1.0,0.0), Array(0.0,0.0,3.0), 600.0, 600.0, 1.0))
+  val resources_array = Array(new Industry("food", Array(0.0,1.0,0.0), Array(2.0,0.0,0.0), 1000.0, 600.0, 1.0),//Bug if good needs itself for production
+                              new Industry("wood", Array(1.0,0.0,1.0), Array(0.0,3.0,0.0), 999.0, 600.0, 1.0),
+                              new Industry("stone", Array(1.0,1.0,0.0), Array(0.0,0.0,3.0), 1.0, 600.0, 1.0))
   var excess_demand = false
   var excess_resourc = 0
   var excess_resourc_amnt = 0.0
@@ -148,7 +148,7 @@ class Industry(nam: String, input: Array[Double], output: Array[Double], worker:
 
 
   override def toString():String={
-    return(name+" \nWorkers "+workers.toString()+" \nStored "+stored.toString()+" \nProduced "+produced.toString()+" \nPrice "+price.toString()+" \n")
+    return(name+", "+workers.toString()+", "+stored.toString()+", "+produced.toString()+", "+price.toString()+" \n")
 
   }
 }
