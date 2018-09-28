@@ -24,6 +24,24 @@ object main{
 
 class World(var sqVol: Int){
   val grid = Array[Square][Square](sqVol)(sqVol)
+  val changed = 0 //hashtable of altered locations
+  var city_order = 0 //priority queue of cities to be affected?
+                    //Subdivide based on how nations? How long does it take to move between states?  Is that relevant?
+
+  def dekstras_generator(){
+    //Check number of trade routes, generate list for that number, give in closeness order
+
+  }
+
+  def next_fiscal_quarter(){
+    //reassign any square that has been altered
+
+    //Spin off for each nation
+
+    //Pass down changed locations
+
+  }
+
 
 }
 
@@ -33,20 +51,53 @@ class Nation(){
 
 }
 
-class Square(var trav: Double, var type, var cit: City){
-  var trade = Array.fill[Double](RESOURCE_NUM)(1000)
+class Square(var trav: Double, var type, var cit: City, var trade_route_num){
+  var square_storage = Array.fill[Double](RESOURCE_NUM)(1000)
+  var trade_desired = Array.fill[Double](RESOURCE_NUM)(0)
+  var warehouse = Array.fill[Double](RESOURCE_NUM)(0)
   var traversal_cost = trav
   var city = cit
   var owner = 0
+  var sema = True
+  val neighbor_queue = 0
+  var trade_route_number = trade_route_num
+  var trade_routes = 0 //Need to implement paths to allow for updating trade relationships.
 
-  def get_trade(){
 
+
+  def next_fiscal_quarter(){
+    trade_desired = city.request_trade()
+    for(i <- neighbor_queue){
+      get_trade(i, trade_desired(), warehouse)
+    }
+    city.recieve_trade(warehouse)
+    city.next_fiscal_quarter()
+    square_storage = city.reserve_next_quantity(square_storage)
   }
 
-  def give_trade(){
-
+  def get_trade(var neighbor:Square, var trade_requested:Array[Double], var gotten:Array[Double]){
+    for(i<-0 until RESOURCE_NUM){
+      gotten(i) = neighbor.give_trade(trade_requested(i),i)
+    }
   }
 
+  def give_trade(var requested: Double, var resource: Int){
+    if (trade(resource) >= requested){
+      trade(resource) = trade(resource) - requested
+      return requested
+    }
+    else{
+      var ret = 0
+      ret = trade(type)
+      trade(type) = 0
+      return ret
+    }
+  }
+
+  def update_neighbors(var altered:Square){
+    //find the square in the trade_routes
+    //update all in chain based off that.
+  }
 
 }
 
@@ -125,7 +176,31 @@ class City(var pop:Double, var fert:Double, var dea:Double){
     return 1
   }
 
-  def findExcess(){
+  def request_trade():Array[Double]={
+    val storage = Array(resources_array(0).stored, resources_array(1).stored, resources_array(2).stored)
+    val workers = Array.fill[Double](RESOURCE_NUM)(0)
+    val demand = Array.fill[Double](RESOURCE_NUM)(0)
+    val shortage = storage
+    var excess = false
+    var ret = 0
+    var amnt = 0.0
+
+    for (i <- resources_array){
+      for (j <- 0 until RESOURCE_NUM){
+        shortage(j) = shortage(j) - i.inputs(j)
+      }
+    }
+    return shortage
+  }
+
+  def recieve_trade(var materials: Array[Double]){
+    for(i <- 0 until RESOURCE_NUM){
+      resources_array(i).storage = resources_array(i).storage + materials(i)
+    }
+
+  }
+
+  def find_excess(){
     val storage = Array(resources_array(0).stored, resources_array(1).stored, resources_array(2).stored)
     val workers = Array.fill[Double](RESOURCE_NUM)(0)
     val demand = Array.fill[Double](RESOURCE_NUM)(0)
@@ -134,13 +209,12 @@ class City(var pop:Double, var fert:Double, var dea:Double){
     var amnt = 0.0
 
     for (i <- resources_array){
-      demand(0) = demand(0) + i.inputs(0)*i.workers
-      demand(1) = demand(1) + i.inputs(1)*i.workers
-      demand(2) = demand(2) + i.inputs(2)*i.workers
-      //Should technically be not zero, here they're all 1 or 0 so its fine as a demo
-      workers(0) = workers(0) + i.inputs(0)*i.workers
-      workers(1) = workers(1) + i.inputs(1)*i.workers
-      workers(2) = workers(2) + i.inputs(2)*i.workers
+      for (j <- 0 until RESOURCE_NUM){
+        demand(j) = demand(j) + i.inputs(j)*i.workers
+        if (i.inputs(j) > 0){
+          workers(j) = workers(j) + i.workers
+        }
+      }
     }
 
     for(i <- 0 to 2){
@@ -155,7 +229,27 @@ class City(var pop:Double, var fert:Double, var dea:Double){
     excess_demand = excess
     excess_resourc = ret
     excess_resourc_amnt = amnt
+  }
 
+  def reserve_next_quantity(var squareReserves:Array[Double]):Array[Double]={
+    var ret = Array.fill[Double](RESOURCE_NUM)(0)
+    val demand = Array.fill[Double](RESOURCE_NUM)(0)
+
+    for (i <- resources_array){
+      for (j <- 0 until RESOURCE_NUM){
+        demand(j) = demand(j) + i.inputs(j)*i.workers
+      }
+    }
+    for(i <- 0 until RESOURCE_NUM){
+      if squareReserves(i)>demand(i){
+        ret(i) = squareReserves(i) - demand(i)
+        resources_array(i).storage = demand(i)
+      }
+      else{
+        ret(i) = 0
+        resources_array(i).storage = squareReserves(i)
+      }
+    }
   }
 
 }
