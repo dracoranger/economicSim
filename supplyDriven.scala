@@ -22,36 +22,116 @@ object main{
   }
 }
 
-class World(var sqVol: Int){
-  val grid = Array[Square][Square](sqVol)(sqVol)
+class World(var seed:Int, var size:Int){
+  val grid = generate_grid(seed, size)
   val changed = 0 //hashtable of altered locations
   var city_order = 0 //priority queue of cities to be affected?
                     //Subdivide based on how nations? How long does it take to move between states?  Is that relevant?
+  var nations = 0 // array of nations
 
-  def dekstras_generator(){
+  def dijkstra_generator(){
     //Check number of trade routes, generate list for that number, give in closeness order
+    for(i<- 0 until size){
+      for(j<- 0 until size){
+        val trade_limit = grid[i][j].trade_route_number
+        var curr_nearest_neighbors = 0
+
+        val active = mutable.Set(source)
+        val res = mutable.Map(source -> 0)
+        var costs = mutable.Map.empty[N, N]//WHAT IS N?
+
+        while(curr_nearest_neighbors < trade_limit){ //Need to finish
+          val node = active.minBy(res)
+          active -= node
+          val cost = res(node)
+          for ((n, c) <- g(node)) {
+            val cost1 = cost + c
+            if (cost1 < res.getOrElse(n, Int.MaxValue)) {
+              active += n
+              res += (n -> cost1)
+              pred += (n -> node)
+            }
+
+          }
+
+        }
+        grid[i][j].update_neighbors(res)
+        grid[i][j].update_tree(costs)
+      }
+
+    }
 
   }
 
   def next_fiscal_quarter(){
     //reassign any square that has been altered
+    var changedSquares = scala.mutable.Map
+    for(i<-nations){
+      changedSquares = changedSquares + i.city_capture()
+    }
+    for(i<-changedSquares){//What happens when captured and recaptured?
+      grid(i._1)(i._2).owner = i
+      i.usedToOwn(city_loss(i._1,i._2))
+    }
 
     //Spin off for each nation
+    for(i<-nations){
+      i.next_fiscal_quarter()
+    }
 
-    //Pass down changed locations
+    //Global trade?
 
+  }
+
+  def calculateType(var i:Int, var j:Int) = {
+    Square(Double(i)+1,Double(j)+1,new City(1000,.15,.10),10)
+  }
+
+  def generate_grid(var seed, var size: Int):Array[Square][Square]={
+    //Generate randomized world
+    //For now, just build identical location
+    val ret = Array.tabulate(size,size)(calculateType)
+    ret
   }
 
 
 }
 
-class Nation(){
+class Nation(var global_trade:Int){
   val national_stores = Array.fill[Double](RESOURCE_NUM)(0)
+  val civil_servants = 0 //Number of population working for the government, rather than in production
+  val cities = 0 //priority queue of cities based on population
+                 //also contains all the squares
+                 //make it so that
+  var willingness_to_trade = global_trade //beginning of differentiating AI
+  val squares = scala.mutable.Map() //(x,y) -> Square
+  //Move djistra's here and recalculate when gained?
 
+  def next_fiscal_quarter(){//Just do it in order
+    //recalculate based on size?
+    //Need to relearn priority queues
+    
+    for(i<-squares){
+      i.next_fiscal_quarter()
+    }
+  }
+
+  def city_capture(){
+
+  }
+  def city_loss(){
+
+  }
+  def trade_request(){
+
+  }
+  def trade_give(){
+
+  }
 
 }
 
-class Square(var trav: Double, var type, var cit: City, var trade_route_num){
+class Square(var trav: Double, var typeOfLand:Int, var cit: City, var trade_route_num:Int){
   var square_storage = Array.fill[Double](RESOURCE_NUM)(1000)
   var trade_desired = Array.fill[Double](RESOURCE_NUM)(0)
   var warehouse = Array.fill[Double](RESOURCE_NUM)(0)
@@ -88,8 +168,8 @@ class Square(var trav: Double, var type, var cit: City, var trade_route_num){
     }
     else{
       var ret = 0
-      ret = trade(type)
-      trade(type) = 0
+      ret = trade(resource)
+      trade(resource) = 0
       return ret
     }
   }
@@ -218,7 +298,7 @@ class City(var pop:Double, var fert:Double, var dea:Double){
     }
 
     for(i <- 0 to 2){
-      if(demand(i) - storage(i) >= 1){
+      if(demand(i) - storage(i) >= demand(i)/workers(i)){ //Now if demand difference is less than 1 worker, we can just ignore, rather than arbitrary value
         excess = true
         if((demand(i) - storage(i))/storage(i) > amnt){
           ret = i
