@@ -110,7 +110,7 @@ class Nation(var global_trade:Int){
   def next_fiscal_quarter(){//Just do it in order
     //recalculate based on size?
     //Need to relearn priority queues
-    
+
     for(i<-squares){
       i.next_fiscal_quarter()
     }
@@ -297,7 +297,7 @@ class City(var pop:Double, var fert:Double, var dea:Double){
       }
     }
 
-    for(i <- 0 to 2){
+    for(i <- 0 to RESOURCE_NUM){
       if(demand(i) - storage(i) >= demand(i)/workers(i)){ //Now if demand difference is less than 1 worker, we can just ignore, rather than arbitrary value
         excess = true
         if((demand(i) - storage(i))/storage(i) > amnt){

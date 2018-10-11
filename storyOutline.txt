@@ -1,0 +1,6 @@
+Storyline
+
+Characters
+  PC - player
+  AE - Aristocrat economist, financial advisor, micro understanding of money
+  AM - Aristocrat military, military advisor, 
