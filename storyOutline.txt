@@ -3,4 +3,33 @@ Storyline
 Characters
   PC - player
   AE - Aristocrat economist, financial advisor, micro understanding of money
-  AM - Aristocrat military, military advisor, 
+    Pompous argumentative asshole
+  AM - Aristocrat military, military advisor, expansionist + believes in magical superattacks - best for personal power growth
+    Pompous siciopathant
+  AR - Aristocrat religious, religious leader, absolute deference to monarchy - best for minnow since won't rally against
+    Pompous demeaning dickwad
+  PE - Professional economist, Macro understanding of world - best for minnow approach
+    Matter of fact, goes into in depth explanations
+  PM - Professional officer,
+    Paranoid and underestimates own military forces, needs more money
+  PR - Professional monk, best for personal expansion and own power growth - doesn't judge
+    Seeks to understand the transmutane,
+
+Game start
+  offer of tutorial (planning celebration)
+    Spend resources on events
+    Draw extra resources needed for next_fiscal_quarter
+    reassign unemployed workers
+    reassign employed workers
+    choose to party more
+      choose to party more
+        choose to party more
+        out of food.
+          use magic to restore supplies
+          get party god opinion modifier
+  main game
+    Senario 1 Overthrow
+      Take control of empire - reduced to ruin
+      Control over capital provience - small agriculture and industry rich provence
+        stated goal - restore borders/glory of empire
+        
